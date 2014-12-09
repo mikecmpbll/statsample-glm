@@ -8,12 +8,6 @@ Statsample-GLM is an extension of *Generalized Linear Models* to {Statsample}[ht
 
 Requires ruby 1.9.3 or higher.
 
-* {sciruby.com}[http://sciruby.com]
-* {Google+}[https://plus.google.com/109304769076178160953/posts]
-* {Ankur Goel}[http://ankurgoel.com]
-* {Statsample}[https://github.com/SciRuby/statsample]
-
-
 == Description
 Statsample-glm includes the following Generalized Linear Models:
 
@@ -40,7 +34,7 @@ To use the library
 
         require 'statsample-glm'
 
-You can also go through the blog-posts on {my blog}[http://ankurgoel.com] for descriptive explanation and examples.
+You can find an Introduction and tutorial {here}[http://v0dro.github.io/blog/2014/09/21/code-generalized-linear-models-introduction-and-implementation-in-ruby/].
 
 
 == Documentation 
@@ -48,22 +42,11 @@ You can also go through the blog-posts on {my blog}[http://ankurgoel.com] for de
 The API doc is {online}[http://rubygems.org/gems/statsample-glm]. For more code examples see also the spec files in the source tree.
         
 
-== Contributing
-
-* Fork the project. 
-* Create your feature branch
-* Add/Modify code. 
-* Write equivalent documentation and **tests**.
-* Run `rspec` to verify that all test case passes.
-* Push your branch.
-* Pull request. :)
-
-
 == Project home page
 
 Information on the source tree, documentation, issues and how to contribute, see
 
-  http://github.com/ankurgel/statsample-glm
+  http://github.com/sciruby/statsample-glm
 
 This Biogem is published at http://biogems.info/index.html#statsample-glm
 
