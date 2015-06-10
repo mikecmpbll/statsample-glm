@@ -38,7 +38,7 @@ module Statsample
         def standard_error
           out = []
 
-          @data_set.fields.each_index do |i|
+          @data_set.vectors.to_a.each_index do |i|
             out << Math::sqrt(@var_cov_matrix[i,i])
           end
 
@@ -146,7 +146,7 @@ module Statsample
         end
 
         def create_vector arr
-          Statsample::Vector.new(arr, :scale)
+          Daru::Vector.new(arr)
         end
       end
     end

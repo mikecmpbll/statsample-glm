@@ -3,7 +3,7 @@ $:.unshift File.expand_path("../lib", __FILE__)
 
 require 'statsample-glm/version'
 
-DESCRIPTION = <<MSG
+Statsample::GLM::DESCRIPTION = <<MSG
 Statsample-GLM is an extension to Statsample, an advance statistics suite in
 Ruby. This gem includes modules for Regression techniques such as Poisson 
 and Logistic Regression using the IRLS algorithm and Logistic,  
@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Ankur Goel', 'Sameer Deshmukh']
   spec.email         = ['sameer.deshmukh93@gmail.com']
   spec.summary       = %q{Generalized Linear Models for Statsample}
-  spec.description   = DESCRIPTION
+  spec.description   = Statsample::GLM::DESCRIPTION
   spec.homepage      = "http://github.com/sciruby/statsample-glm"
   spec.license       = 'BSD-2'
 
@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'statsample', '~> 1.4'
+  spec.add_runtime_dependency 'statsample'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'

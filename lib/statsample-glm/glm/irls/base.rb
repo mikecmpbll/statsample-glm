@@ -17,14 +17,12 @@ module Statsample
        private
 
         def irls
-
           max_iter   = @opts[:iterations]
           b          = Matrix.column_vector Array.new(@data_set.column_size,0.0)
 
           1.upto(max_iter) do
             intermediate = (hessian(@data_set,b).inverse * 
                             jacobian(@data_set, b, @dependent))
-
             b_new        = b - intermediate
 
             if((b_new - b).map(&:abs)).to_a.flatten.inject(:+) < @opts[:epsilon]
@@ -46,7 +44,7 @@ module Statsample
         end
 
         def create_vector arr
-          Statsample::Vector.new(arr, :scale)
+          Daru::Vector.new(arr)
         end
       end
     end

@@ -3,8 +3,8 @@ require 'spec_helper.rb'
 describe Statsample::GLM::Logistic do
   context "IRLS algorithm" do
     before do
-      @data_set = Statsample::CSV.read "spec/data/logistic.csv"
-      @glm  = Statsample::GLM.compute @data_set, 'y', :logistic, {constant: 1}
+      @data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      @glm  = Statsample::GLM.compute @data_set, :y, :logistic, {constant: 1}
     end
 
     it "reports correct coefficients as an array" do
@@ -21,8 +21,8 @@ describe Statsample::GLM::Logistic do
 
   context "MLE algorithm" do
     before do
-      @data_set = Statsample::CSV.read("spec/data/logistic_mle.csv")
-      @glm      = Statsample::GLM.compute @data_set,'y', :logistic, {constant: 1, algorithm: :mle}
+      @data_set = Daru::DataFrame.from_csv("spec/data/logistic_mle.csv")
+      @glm      = Statsample::GLM.compute @data_set,:y, :logistic, {constant: 1, algorithm: :mle}
     end
 
     it "reports correct regression values as an array" do

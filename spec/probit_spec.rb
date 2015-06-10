@@ -5,7 +5,7 @@ describe Statsample::GLM::Probit do
 
   context "MLE algorithm" do
     before do
-      @data_set = Statsample::CSV.read 'spec/data/logistic_mle.csv'
+      @data_set = Daru::DataFrame.from_csv 'spec/data/logistic_mle.csv'
       @glm      = Statsample::GLM.compute @data_set, :y, :probit, 
                     {algorithm: :mle, constant: 1}
     end

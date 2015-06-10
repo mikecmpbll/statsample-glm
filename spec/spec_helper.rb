@@ -17,7 +17,7 @@ require 'statsample-glm'
 def expect_similar_vector(exp, obs, delta=1e-10,msg=nil)
   expect(exp.size).to eq(obs.size)
 
-  exp.data_with_nils.each_with_index do |v,i|
+  exp.to_a.each_with_index do |v,i|
     expect(v).to be_within(delta).of(obs[i])
   end
 end

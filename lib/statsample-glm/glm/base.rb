@@ -13,8 +13,8 @@ module Statsample
           
         set_default_opts_if_any
 
-        @data_set  = ds.dup(ds.fields - [y.to_s])
-        @dependent = ds[y.to_s]
+        @data_set  = ds.dup(ds.vectors.to_a - [y])
+        @dependent = ds[y]
 
         add_constant_vector if @opts[:constant]
         add_constant_vector(1) if self.is_a? Statsample::GLM::Normal
@@ -32,7 +32,7 @@ module Statsample
       def coefficients as_a=:array
         if as_a == :hash
           c = {}
-          @data_set.fields.each_with_index do |f,i|
+          @data_set.vectors.to_a.each_with_index do |f,i|
             c[f.to_sym] = @regression.coefficients[i]
           end
           return c
@@ -43,7 +43,7 @@ module Statsample
       def standard_error as_a=:array  
         if as_a == :hash
           se = {}
-          @data_set.fields.each_with_index do |f,i|
+          @data_set.vectors.to_a.each_with_index do |f,i|
             se[f.to_sym] = @regression.standard_error[i]
           end
           return se
@@ -82,16 +82,14 @@ module Statsample
       end
 
       def create_vector arr
-        Statsample::Vector.new(arr, :scale)
+        Daru::Vector.new(arr)
       end
 
       def add_constant_vector x=nil
-        @data_set.add_vector "constant", 
-          (([@opts[:constant]]*@data_set.cases).to_vector(:scale))
+        @data_set.add_vector :constant, [@opts[:constant]]*@data_set.nrows
 
         unless x.nil?
-          @data_set.add_vector "constant", 
-            (([1]*@data_set.cases).to_vector(:scale))
+          @data_set.add_vector :constant, [1]*@data_set.nrows
         end
       end
     end
