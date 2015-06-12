@@ -1,14 +1,13 @@
-= statsample-glm
+# statsample-glm
 
-{<img
-src="https://secure.travis-ci.org/AnkurGel/statsample-glm.png"
-/>}[http://travis-ci.org/#!/AnkurGel/statsample-glm]
+[![Build Status](https://travis-ci.org/SciRuby/statsample-glm.svg?branch=master)](https://travis-ci.org/SciRuby/statsample-glm)
 
 Statsample-GLM is an extension of *Generalized Linear Models* to {Statsample}[https://github.com/SciRuby/statsample], a suite of advance statistics in Ruby.
 
 Requires ruby 1.9.3 or higher.
 
-== Description
+## Description
+
 Statsample-glm includes the following Generalized Linear Models:
 
 * Iteratively Reweighted Least Squares
@@ -21,14 +20,12 @@ Statsample-glm includes the following Generalized Linear Models:
 
 Statsample-GLM was created by Ankur Goel as part of Google's Summer of Code 2013. It is the part of {the SciRuby Project}[http://sciruby.com].
 
-Note: This is under active development!
-
-== Installation
+## Installation
 
         gem install statsample-glm
 
 
-== Usage
+## Usage
 
 To use the library 
 
@@ -37,12 +34,12 @@ To use the library
 You can find an Introduction and tutorial {here}[http://v0dro.github.io/blog/2014/09/21/code-generalized-linear-models-introduction-and-implementation-in-ruby/].
 
 
-== Documentation 
+## Documentation 
 
 The API doc is {online}[http://rubygems.org/gems/statsample-glm]. For more code examples see also the spec files in the source tree.
         
 
-== Project home page
+## Project home page
 
 Information on the source tree, documentation, issues and how to contribute, see
 
@@ -50,7 +47,7 @@ Information on the source tree, documentation, issues and how to contribute, see
 
 This Biogem is published at http://biogems.info/index.html#statsample-glm
 
-== Copyright
+## Copyright
 
 Copyright (c) 2013 Ankur Goel and the Ruby Science Foundation. See LICENSE.txt for further details.
 
