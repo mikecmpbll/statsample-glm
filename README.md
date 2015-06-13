@@ -33,6 +33,10 @@ To use the library
 
 You can find an Introduction and tutorial {here}[http://v0dro.github.io/blog/2014/09/21/code-generalized-linear-models-introduction-and-implementation-in-ruby/].
 
+### Case Studies
+
+* [Logistic Regression Analysis with daru and statsample-glm](http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Logistic%20Regression%20with%20daru%20and%20statsample-glm.ipynb)
+
 
 ## Documentation 
 
