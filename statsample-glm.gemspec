@@ -5,7 +5,9 @@ require 'statsample-glm/version'
 
 Statsample::GLM::DESCRIPTION = <<MSG
 Statsample-GLM is an extension to Statsample, an advance statistics suite in
-Ruby. This gem includes modules for Regression techniques such as Poisson 
+Ruby. 
+
+This gem includes modules for Regression techniques such as Poisson 
 and Logistic Regression using the IRLS algorithm and Logistic,  
 Probit and Normal Regression using the Newton Raphson algorithm.
 MSG
@@ -26,9 +28,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency 'daru', '~> 0.1'
-  spec.add_runtime_dependency 'statsample', '~> 1.5'
+  spec.add_runtime_dependency 'statsample', '~> 2.0'
 
-  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'bundler', '~> 1.10'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'awesome_print'
