@@ -20,7 +20,7 @@ Statsample-glm includes the following Generalized Linear Models:
   * Probit Regression
   * Normal Regression
 
-Statsample-GLM was created by Ankur Goel as part of Google's Summer of Code 2013. It is the part of {the SciRuby Project}[http://sciruby.com].
+Statsample-GLM was created by Ankur Goel as part of Google's Summer of Code 2013. It is the part of [the SciRuby Project](http://sciruby.com).
 
 ## Installation
 
@@ -43,7 +43,7 @@ To use the library
 
 ## Documentation 
 
-The API doc is {online}[http://rubygems.org/gems/statsample-glm]. For more code examples see also the spec files in the source tree.
+The API doc is [online](http://rubygems.org/gems/statsample-glm). For more code examples see also the spec files in the source tree.
 
 ## Project home page
 
