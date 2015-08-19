@@ -4,6 +4,7 @@ describe Statsample::GLM::Logistic do
   context "IRLS algorithm" do
     before do
       @data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      @data_set.vectors = Daru::Index.new([:x1,:x2,:y])
       @glm  = Statsample::GLM.compute @data_set, :y, :logistic, {constant: 1}
     end
 
@@ -22,6 +23,7 @@ describe Statsample::GLM::Logistic do
   context "MLE algorithm" do
     before do
       @data_set = Daru::DataFrame.from_csv("spec/data/logistic_mle.csv")
+      @data_set.vectors = Daru::Index.new([:a,:b,:c,:y])
       @glm      = Statsample::GLM.compute @data_set,:y, :logistic, {constant: 1, algorithm: :mle}
     end
 
