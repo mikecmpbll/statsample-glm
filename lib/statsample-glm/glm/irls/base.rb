@@ -14,6 +14,33 @@ module Statsample
           irls
         end
 
+        # Use the fitted GLM to obtain predictions on new data.
+        #
+        # == Arguments 
+        #
+        # * new_data - a `Daru::DataFrame` containing new observations for the same
+        #   variables that were used to fit the model. The vectors must be given
+        #   in the same order as in the data frame that was originally used to fit
+        #   the model. If `new_data` is not provided, then the original data frame
+        #   which was used to fit the model, is used in place of `new_data`.
+        #
+        # == Returns
+        #
+        #   A `Daru::Vector` containing the predictions. The predictions are 
+        #   computed on the scale of the response variable (for example, for
+        #   the logistic regression model, the predictions are probabilities
+        #   on logit scale).
+        #
+        def predict new_data_set=nil
+          if new_data_set.nil? then
+            @fitted_mean_values
+          else
+            new_data_matrix = new_data_set.to_matrix
+            b               = @coefficients.to_matrix axis=:vertical
+            create_vector measurement(new_data_matrix, b).to_a.flatten
+          end
+        end
+
        private
 
         def irls

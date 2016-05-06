@@ -18,6 +18,14 @@ describe Statsample::GLM::Logistic do
       expect_similar_hash(@glm.coefficients(:hash), {:constant => 0.675603176233325,
         :x1 => -0.312493754568903, :x2 => 2.28671333346264})
     end
+
+    it "computes predictions on new data correctly" do
+      new_data = Daru::DataFrame.new([[0.1, 0.2, 0.3], [-0.1, 0.0, 0.1]],
+                                     order: [:x1, :x2])
+      #predictions obtained in R with predict.glm with type='response':
+      predictions = [0.6024496420392773, 0.6486486378079901, 0.6922216620285218]
+      expect_similar_vector @glm.predict(new_data), predictions
+    end
   end
 
   context "MLE algorithm" do
@@ -34,6 +42,14 @@ describe Statsample::GLM::Logistic do
       expect_similar_vector(@glm.standard_error, [0.4390, 0.4270, 0.3819,1.9045],0.001)
 
       expect(@glm.iterations).to eq(7)
+    end
+
+    it "computes predictions on new data correctly" do
+      new_data = Daru::DataFrame.new([[-1.0, -150.0], [0.0, 150.0], [1.0, 150.0]],
+                                     order: ['a', 'b', 'c'])
+      #predictions obtained with in R predict.glm with type='response':
+      predictions = [0.002247048350428831, 0.999341821607089287]
+      expect_similar_vector @glm.predict(new_data), predictions
     end
   end
 end

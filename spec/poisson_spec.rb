@@ -24,6 +24,14 @@ describe Statsample::GLM::Poisson do
       expect_similar_hash(@glm.coefficients(:hash), {:constant => 0.32993246633711,
         :x1 => -0.586359358356708, :x2 => 1.28511323439258})
     end
+
+    it "computes predictions on new data correctly" do
+      @glm = Statsample::GLM.compute @df,:y,:poisson, {algorithm: :irls, constant: 1}
+      new_data = Daru::DataFrame.new(x1: [-0.5, 0.5], x2: [-1.0, 1.0])
+      #predictions obtained in R with predict.glm with type='response':
+      predictions = [0.5158181031737609, 3.7504132036471081]
+      expect_similar_vector @glm.predict(new_data), predictions
+    end
   end
 
   context "MLE algorithm" do
