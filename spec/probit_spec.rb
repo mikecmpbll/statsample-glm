@@ -16,5 +16,13 @@ describe Statsample::GLM::Probit do
 
       expect(@glm.log_likelihood).to be_within(0.0001).of(-38.31559)
     end
+
+    it "computes predictions on new data correctly" do
+      new_data = Daru::DataFrame.new([[-50.0, -100.0], [50.0, 100.0], [50.0, 100.0]],
+                                     order: ['a', 'b', 'c'])
+      #predictions obtained with in R predict.glm with type='response':
+      predictions = [0.2516918644447207, 0.9580621633922622]
+      expect_similar_vector @glm.predict(new_data), predictions, delta=1e-4
+    end
   end
 end

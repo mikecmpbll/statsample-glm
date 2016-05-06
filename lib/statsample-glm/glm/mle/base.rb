@@ -45,6 +45,40 @@ module Statsample
           out
         end
 
+        # Use the fitted GLM to obtain predictions on new data.
+        #
+        # == Arguments 
+        #
+        # * new_data - a `Daru::DataFrame` containing new observations for the same
+        #   variables that were used to fit the model. The vectors must be given
+        #   in the same order as in the data frame that was originally used to fit
+        #   the model. If `new_data` is not provided, then the original data frame
+        #   which was used to fit the model, is used in place of `new_data`.
+        #
+        # == Returns
+        #
+        #   A `Daru::Vector` containing the predictions. The predictions are 
+        #   computed on the scale of the response variable (for example, for
+        #   the logistic regression model, the predictions are probabilities
+        #   on logit scale).
+        #
+        def predict new_data_set=nil
+          if new_data_set.nil? then
+            @fitted_mean_values
+          else
+            new_data_matrix = new_data_set.to_matrix
+            # this if statement is done because Statsample::GLM::MLE::Normal#measurement expects that
+            # the coefficient vector has a redundant last element (which is discarded by #measurement
+            # in further computation)
+            b = if self.is_a?(Statsample::GLM::MLE::Normal) then
+                  Matrix.column_vector(@coefficients.to_a + [nil])
+                else
+                  @coefficients.to_matrix(axis=:vertical)
+                end
+            create_vector measurement(new_data_matrix, b).to_a.flatten
+          end
+        end
+
         # Newton Raphson with automatic stopping criteria.
         # Based on: Von Tessin, P. (2005). Maximum Likelihood Estimation With Java and Ruby
         #
