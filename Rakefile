@@ -1,8 +1,10 @@
 # encoding: utf-8
 require 'rake'
 require 'bundler/gem_tasks'
-
 require 'bundler'
+
+lib_folder = File.expand_path("../lib", __FILE__)
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -21,6 +23,10 @@ task :console do
   IRB.start
 end
 
+task :pry do |task|
+  cmd = [ 'pry', "-r '#{lib_folder}/statsample-glm.rb'" ]
+  run *cmd
+end
 
 require 'rspec/core/rake_task'
 
@@ -37,4 +43,8 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = "statsample-glm #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+def run *cmd
+  sh(cmd.join(" "))
 end
