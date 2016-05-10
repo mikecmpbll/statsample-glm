@@ -29,27 +29,38 @@ module Statsample
                             .new(@data_set, @dependent, @opts)
       end
       
-      def coefficients as_a=:array
-        if as_a == :hash
+      def coefficients as_a=:vector
+        case as_a
+        when :hash
           c = {}
           @data_set.vectors.to_a.each_with_index do |f,i|
             c[f.to_sym] = @regression.coefficients[i]
           end
-          return c
+          c
+        when :array
+          @regression.coefficients.to_a
+        when :vector
+          @regression.coefficients
+        else
+          raise ArgumentError, "as_a has to be one of :array, :hash, or :vector"
         end
-        create_vector @regression.coefficients
       end
 
-      def standard_error as_a=:array  
-        if as_a == :hash
+      def standard_error as_a=:vector  
+        case as_a
+        when :hash
           se = {}
           @data_set.vectors.to_a.each_with_index do |f,i|
             se[f.to_sym] = @regression.standard_error[i]
           end
-          return se
+          se
+        when :array
+          @regression.standard_error.to_a
+        when :vector
+          @regression.standard_error
+        else
+          raise ArgumentError, "as_a has to be one of :array, :hash, or :vector"
         end
-
-        create_vector @regression.standard_error
       end
 
       def iterations

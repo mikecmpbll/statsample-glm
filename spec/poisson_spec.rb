@@ -9,20 +9,28 @@ describe Statsample::GLM::Poisson do
 
     end
 
-    it "reports return values as arrays for IRLS" do
-      @glm    = Statsample::GLM.compute @df,:y,:poisson, 
-                  {algorithm: :irls, constant: 1}
+    it "reports return values a Daru::Vector for IRLS" do
+      @glm = Statsample::GLM.compute @df, :y, :poisson, {algorithm: :irls, constant: 1}
 
-      expect_similar_vector(@glm.coefficients,[-0.586359358356708,
-        1.28511323439258,0.32993246633711])
+      expect_similar_vector(@glm.coefficients, [-0.586359358356708,
+                                                1.28511323439258,
+                                                0.32993246633711])
     end
 
     it "reports return values as a hash for IRLS" do
-      @glm    = Statsample::GLM.compute @df,:y,:poisson, 
-                  {algorithm: :irls, constant: 1}
+      @glm = Statsample::GLM.compute @df, :y, :poisson, {algorithm: :irls, constant: 1}
 
       expect_similar_hash(@glm.coefficients(:hash), {:constant => 0.32993246633711,
-        :x1 => -0.586359358356708, :x2 => 1.28511323439258})
+                                                     :x1 => -0.586359358356708,
+                                                     :x2 => 1.28511323439258})
+    end
+
+    it "reports return values as an array for IRLS" do
+      @glm = Statsample::GLM.compute @df, :y, :poisson, {algorithm: :irls, constant: 1}
+
+      expect_similar_array(@glm.coefficients(:array), [-0.586359358356708,
+                                                       1.28511323439258,
+                                                       0.32993246633711])
     end
 
     it "computes predictions on new data correctly" do

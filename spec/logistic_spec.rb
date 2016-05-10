@@ -9,14 +9,20 @@ describe Statsample::GLM::Logistic do
     end
 
     it "reports correct coefficients as an array" do
-      expect_similar_vector(@glm.coefficients,[-0.312493754568903,
-        2.28671333346264,0.675603176233325])
-
+      expect_similar_array(@glm.coefficients(:array), [-0.312493754568903,
+                                                       2.28671333346264,
+                                                       0.675603176233325])
     end
 
     it "reports correct coefficients as a hash" do
       expect_similar_hash(@glm.coefficients(:hash), {:constant => 0.675603176233325,
-        :x1 => -0.312493754568903, :x2 => 2.28671333346264})
+                                                     :x1 => -0.312493754568903,
+                                                     :x2 => 2.28671333346264})
+    end
+
+    it "reports correct coefficients as a Daru::Vector" do
+      expect_similar_vector(@glm.coefficients, [-0.312493754568903,
+                                                2.28671333346264, 0.675603176233325])
     end
 
     it "computes predictions on new data correctly" do
@@ -35,13 +41,38 @@ describe Statsample::GLM::Logistic do
       @glm      = Statsample::GLM.compute @data_set,:y, :logistic, {constant: 1, algorithm: :mle}
     end
 
-    it "reports correct regression values as an array" do
+    it "reports correct log-likelihood" do
       expect(@glm.log_likelihood).to be_within(0.001).of(-38.8669)
+    end
 
-      expect_similar_vector(@glm.coefficients, [0.3270, 0.8147, -0.4031,-5.3658],0.001)
-      expect_similar_vector(@glm.standard_error, [0.4390, 0.4270, 0.3819,1.9045],0.001)
-
+    it "report the correct number of iterations" do
       expect(@glm.iterations).to eq(7)
+    end
+
+    it "reports correct regression coefficients as a Daru::Vector" do
+      expect_similar_vector(@glm.coefficients, [0.3270, 0.8147, -0.4031,-5.3658], 0.001)
+    end
+
+    it "reports correct standard deviations as a Daru::Vector" do
+      expect_similar_vector(@glm.standard_error, [0.4390, 0.4270, 0.3819,1.9045], 0.001)
+    end
+
+    it "reports correct regression coefficients as an array" do
+      expect_similar_array(@glm.coefficients(:array), [0.3270, 0.8147, -0.4031,-5.3658], 0.001)
+    end
+
+    it "reports correct standard deviations as an array" do
+      expect_similar_array(@glm.standard_error(:array), [0.4390, 0.4270, 0.3819,1.9045], 0.001)
+    end
+
+    it "reports correct regression coefficients as a hash" do
+      expect_similar_hash(@glm.coefficients(:hash), {:a => 0.3270, :b => 0.8147, :c => -0.4031,
+                                                     :constant => -5.3658}, 0.001)
+    end
+
+    it "reports correct standard deviations as a hash" do
+      expect_similar_hash(@glm.standard_error(:hash), {:a => 0.4390, :b => 0.4270, :c => 0.3819,
+                                                       :constant => 1.9045}, 0.001)
     end
 
     it "computes predictions on new data correctly" do

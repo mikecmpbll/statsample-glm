@@ -42,7 +42,7 @@ module Statsample
             out << Math::sqrt(@var_cov_matrix[i,i])
           end
 
-          out
+          create_vector out
         end
 
         # Use the fitted GLM to obtain predictions on new data.
