@@ -11,10 +11,21 @@ describe Statsample::GLM::Probit do
                     {algorithm: :mle, constant: 1}
     end
 
-    it "reports correct values as an array" do
-      expect_similar_vector(@glm.coefficients,[0.1763,0.4483,-0.2240,-3.0670],0.001)
-
+    it "reports correct log-likelihood" do
       expect(@glm.log_likelihood).to be_within(0.0001).of(-38.31559)
+    end
+
+    it "reports correct regression coefficients as a Daru::Vector" do
+      expect_similar_vector(@glm.coefficients,[0.1763,0.4483,-0.2240,-3.0670],0.001)
+    end
+
+    it "reports correct regression coefficients as an array" do
+      expect_similar_array(@glm.coefficients(:array),[0.1763,0.4483,-0.2240,-3.0670],0.001)
+    end
+
+    it "reports correct regression coefficients as a hash" do
+      expect_similar_hash(@glm.coefficients(:hash), {:a => 0.1763, :b => 0.4483, :c => -0.2240,
+                                                     :constant => -3.0670}, 0.001)
     end
 
     it "computes predictions on new data correctly" do

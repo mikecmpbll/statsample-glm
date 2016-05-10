@@ -6,7 +6,7 @@ describe Statsample::GLM::Normal do
         order: ['ROLL', 'UNEM', 'HGRAD', 'INC']
     end
 
-    it "reports correct values as an array", focus: true do
+    it "reports correct values as a Daru::Vector", focus: true do
       @glm = Statsample::GLM.compute @ds, 'ROLL', :normal, {algorithm: :mle}
       
       expect_similar_vector @glm.coefficients, [450.12450365911894, 

@@ -15,6 +15,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'statsample-glm'
 
 def expect_similar_vector(exp, obs, delta=1e-10,msg=nil)
+  expect(exp.is_a? Daru::Vector).to be true
   expect(exp.size).to eq(obs.size)
 
   exp.to_a.each_with_index do |v,i|
@@ -23,6 +24,7 @@ def expect_similar_vector(exp, obs, delta=1e-10,msg=nil)
 end
 
 def expect_similar_hash(exp, obs, delta=1e-10,msg=nil)
+  expect(exp.is_a? Hash).to be true
   expect(exp.size).to eq(obs.size)
 
   exp.each_key do |k|
@@ -30,7 +32,17 @@ def expect_similar_hash(exp, obs, delta=1e-10,msg=nil)
   end
 end
 
+def expect_similar_array(exp, obs, delta=1e-10,msg=nil)
+  expect(exp.is_a? Array).to be true
+  expect(exp.size).to eq(obs.size)
+
+  exp.each_with_index do |v,i|
+    expect(v).to be_within(delta).of(obs[i])
+  end
+end
+
 def expect_equal_vector(exp,obs,delta=1e-10,msg=nil)
+  expect(exp.is_a? Daru::Vector).to be true
   expect(exp.size).to eq(obs.size)
 
   exp.size.times do |i|
