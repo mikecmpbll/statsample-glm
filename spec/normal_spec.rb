@@ -10,7 +10,14 @@ describe Statsample::GLM::Normal do
       @glm = Statsample::GLM.compute @ds, 'ROLL', :normal, {algorithm: :mle}
       
       expect_similar_vector @glm.coefficients, [450.12450365911894, 
-        0.4064837278023981, 4.27485769721736,-9153.254462671905]
+        0.4064837278023981, 4.27485769721736, -9153.254462671905]
+    end
+
+    it "reports correct values when constant is different from 1", focus: true do
+      @glm = Statsample::GLM.compute @ds, 'ROLL', :normal, {constant: 2, algorithm: :mle}
+      
+      expect_similar_vector @glm.coefficients, [450.12450365911894, 
+        0.4064837278023981, 4.27485769721736, -4576.627231335952]
     end
 
     it "computes predictions of new data correctly" do

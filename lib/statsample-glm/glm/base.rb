@@ -16,8 +16,11 @@ module Statsample
         @data_set  = ds.dup(ds.vectors.to_a - [y])
         @dependent = ds[y]
 
-        add_constant_vector if @opts[:constant]
-        add_constant_vector(1) if self.is_a? Statsample::GLM::Normal
+        if @opts[:constant]
+          add_constant_vector
+        else
+          add_constant_vector(1) if self.is_a? Statsample::GLM::Normal
+        end
 
         algorithm = @opts[:algorithm].upcase
         method    = @opts[:method].capitalize
