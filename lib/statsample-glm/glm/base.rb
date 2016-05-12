@@ -17,7 +17,7 @@ module Statsample
         @dependent = ds[y]
 
         if @opts[:constant]
-          add_constant_vector
+          add_constant_vector @opts[:constant]
         else
           add_constant_vector(1) if self.is_a? Statsample::GLM::Normal
         end
@@ -143,12 +143,8 @@ module Statsample
         Daru::Vector.new(arr)
       end
 
-      def add_constant_vector x=nil
-        @data_set.add_vector :constant, [@opts[:constant]]*@data_set.nrows
-
-        unless x.nil?
-          @data_set.add_vector :constant, [1]*@data_set.nrows
-        end
+      def add_constant_vector x=1
+        @data_set.add_vector :constant, [x]*@data_set.nrows
       end
     end
   end
