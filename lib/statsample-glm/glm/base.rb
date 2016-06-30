@@ -31,7 +31,21 @@ module Statsample
                             .const_get("#{algorithm}").const_get("#{method}")
                             .new(@data_set, @dependent, @opts)
       end
-      
+
+      # Returns the coefficients of trained model
+      #
+      # @param [Symbol] as_a Specifies the form of output
+      #
+      # @return [Vector, Hash, Array] coefficients of the model
+      #
+      # @example
+      #   require 'statsample-glm'
+      #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      #   glm  = Statsample::GLM.compute data_set, "y", :logistic, {constant: 1}
+      #   glm.coefficients as_a = :hash
+      #     # =>
+      #     # {:x1=>-0.3124937545689041, :x2=>2.286713333462646, :constant=>0.675603176233328}
+      #
       def coefficients as_a=:vector
         case as_a
         when :hash
@@ -49,6 +63,23 @@ module Statsample
         end
       end
 
+      # Returns the standard errors for the coefficient estimates
+      #
+      # @param [Symbol] as_a Specifies the form of output
+      #
+      # @return [Vector, Hash, Array] standard error
+      #
+      # @example
+      #   require 'statsample-glm'
+      #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      #   glm  = Statsample::GLM.compute data_set, "y", :logistic, {constant: 1}
+      #   glm.standard_error
+      #     # #<Daru::Vector:25594060 @name = nil @metadata = {} @size = 3 >
+      #     #                                     nil
+      #     #                   0  0.4130813039878828
+      #     #                   1  0.7194644911927432
+      #     #                   2 0.40380565497038895
+      #
       def standard_error as_a=:vector  
         case as_a
         when :hash
@@ -70,18 +101,78 @@ module Statsample
         @regression.iterations
       end
 
+      # Returns the values predicted by the model
+      #
+      # @return [Vector] vectors of predicted values
+      #
+      # @example
+      #   require 'statsample-glm'
+      #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      #   glm  = Statsample::GLM.compute data_set, "y", :logistic, constant: 1
+      #   glm.fitted_mean_values
+      #     # => 
+      #     # #<Daru::Vector:27008600 @name = nil @metadata = {} @size = 50 >
+      #     #                                       nil
+      #     #                   0  0.18632025624516532
+      #     #                   1   0.5146459448198846
+      #     #                   2     0.84083523282549
+      #     #                   3   0.9241524337773334
+      #     #                   4   0.7718528863631826
+      #     #                 ...                  ...
+      #
       def fitted_mean_values
         @regression.fitted_mean_values
       end
 
+      # Returns the residual for every data point
+      #
+      # @return [Vector] all residuals in a vector
+      #
+      # @example
+      #   require 'statsample-glm'
+      #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      #   glm  = Statsample::GLM.compute data_set, "y", :logistic, {constant: 1}
+      #   glm.residuals
+      #     # #<Daru::Vector:22263420 @name = y @metadata = {} @size = 50 >
+      #     #                                         y
+      #     #                   0 -0.18632025624516532
+      #     #                   1  -0.5146459448198846
+      #     #                   2     0.15916476717451
+      #     #                   3  -0.9241524337773334
+      #     #                   4   0.2281471136368174
+      #     #                 ...                  ...
+      #
       def residuals
         @regression.residuals
       end
 
+      # Returns the degrees of freedom value.
+      #
+      # @return [Integer] the degrees of freedom
+      #
+      # @example
+      #   require 'statsample-glm'
+      #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      #   glm  = Statsample::GLM.compute data_set, "y", :logistic, constant: 1
+      #   glm.degree_of_freedom
+      #     # => 47
+      #
       def degree_of_freedom
         @regression.degree_of_freedom
       end
 
+      # Returns the optimal value of the log-likelihood function when using MLE algorithm.
+      # The optimal value is the value of the log-likelihood function at the MLE solution.
+      #
+      # @return [Numeric] the optimal value of log-likelihood function
+      #
+      # @example
+      #   require 'statsample-glm'
+      #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      #   glm  = Statsample::GLM.compute data_set, "y", :logistic, constant: 1, algorithm: :mle
+      #   glm.log_likelihood
+      #     # => -21.4752278175261
+      #
       def log_likelihood
         @regression.log_likelihood if @opts[:algorithm] == :mle
       end
