@@ -7,14 +7,15 @@ require 'statsample-glm/glm/mle/normal'
 module Statsample
   module GLM
     class Base
+      extend Gem::Deprecate
 
       def initialize ds, y, opts={}
         @opts   = opts
           
         set_default_opts_if_any
 
-        @data_set  = ds.dup(ds.vectors.to_a - [y])
         @dependent = ds[y]
+        @data_set = ds.delete_vector y
 
         if @opts[:constant]
           add_constant_vector @opts[:constant]
@@ -25,12 +26,11 @@ module Statsample
         algorithm = @opts[:algorithm].upcase
         method    = @opts[:method].capitalize
 
-        # TODO: Remove this const_get jugaad after 1.9.3 support is removed.
-
-        @regression = Kernel.const_get("Statsample").const_get("GLM")
-                            .const_get("#{algorithm}").const_get("#{method}")
-                            .new(@data_set, @dependent, @opts)
+        @regression = Object.const_get(
+                      "Statsample::GLM::#{algorithm}::#{method}"
+                      ).new @data_set, @dependent, @opts
       end
+
 
       # Returns the coefficients of trained model
       #
@@ -73,29 +73,33 @@ module Statsample
       #   require 'statsample-glm'
       #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
       #   glm  = Statsample::GLM.compute data_set, "y", :logistic, {constant: 1}
-      #   glm.standard_error
+      #   glm.standard_errors
       #     # #<Daru::Vector:25594060 @name = nil @metadata = {} @size = 3 >
       #     #                                     nil
       #     #                   0  0.4130813039878828
       #     #                   1  0.7194644911927432
       #     #                   2 0.40380565497038895
       #
-      def standard_error as_a=:vector  
+      def standard_errors as_a=:vector  
         case as_a
         when :hash
           se = {}
           @data_set.vectors.to_a.each_with_index do |f,i|
-            se[f.to_sym] = @regression.standard_error[i]
+            se[f.to_sym] = @regression.standard_errors[i]
           end
           se
         when :array
-          @regression.standard_error.to_a
+          @regression.standard_errors.to_a
         when :vector
-          @regression.standard_error
+          @regression.standard_errors
         else
           raise ArgumentError, "as_a has to be one of :array, :hash, or :vector"
         end
       end
+      
+      # standard_error will be removed soon
+      alias :standard_error :standard_errors
+      deprecate :standard_error, :standard_errors, 2017, 1
 
       def iterations
         @regression.iterations
@@ -154,12 +158,16 @@ module Statsample
       #   require 'statsample-glm'
       #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
       #   glm  = Statsample::GLM.compute data_set, "y", :logistic, constant: 1
-      #   glm.degree_of_freedom
+      #   glm.degrees_of_freedom
       #     # => 47
       #
-      def degree_of_freedom
-        @regression.degree_of_freedom
+      def degrees_of_freedom
+        @regression.degrees_of_freedom
       end
+
+      # degrees_of_freedom will be removed soon
+      alias :degree_of_freedom :degrees_of_freedom
+      deprecate :degree_of_freedom, :degrees_of_freedom, 2017, 1
 
       # Returns the optimal value of the log-likelihood function when using MLE algorithm.
       # The optimal value is the value of the log-likelihood function at the MLE solution.
