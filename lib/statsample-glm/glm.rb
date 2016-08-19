@@ -2,6 +2,10 @@ require 'statsample-glm/glm/logistic'
 require 'statsample-glm/glm/probit'
 require 'statsample-glm/glm/poisson'
 require 'statsample-glm/glm/normal'
+require 'statsample-glm/glm/formula/formula.rb'
+require 'statsample-glm/glm/formula/wrapper.rb'
+require 'statsample-glm/glm/formula/token.rb'
+require 'statsample-glm/glm/regression'
 
 module Statsample
   module GLM
@@ -31,5 +35,11 @@ module Statsample
         "Statsample::GLM::#{method.capitalize}"
       ).new data_set, dependent_column, opts
     end
+
+    # TODO: Decide whether to remove this or not.
+    # def self.fit_model(formula, df, method, opts={})
+    #   reg = Statsample::GLM::Regression.new formula, df, method, opts
+    #   reg.fit_model
+    # end
   end
 end

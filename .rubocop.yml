@@ -1,0 +1,34 @@
+AllCops:
+  Include:
+    - 'lib/statsample-glm/glm/formula/formula.rb'
+    - 'lib/statsample-glm/glm/formula/wrapper.rb'
+    - 'lib/statsample-glm/glm/formula/token.rb'
+    - 'lib/statsample-glm/glm/regression.rb'
+  Exclude:
+    - 'lib/statsample-glm/glm/base.rb'
+    - 'lib/statsample-glm/glm/logistic.rb'
+    - 'lib/statsample-glm/glm/normal.rb'
+    - 'lib/statsample-glm/glm/poisson.rb'
+    - 'lib/statsample-glm/glm/probit.rb'
+    - 'lib/statsample-glm/glm/irls/*'
+    - 'lib/statsample-glm/glm/mle/*'
+    - 'spec/*'
+    - 'lib/statsample-glm/version.rb'
+    - 'lib/statsample-glm/glm.rb'
+    - 'lib/statsample-glm.rb'
+  DisplayCopNames: true
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/CyclomaticComplexity:
+  Max: 7
+
+Metrics/ModuleLength:
+  Max: 200
+
+Metrics/ClassLength:
+  Max: 200
