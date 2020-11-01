@@ -185,6 +185,23 @@ module Statsample
         @regression.log_likelihood if @opts[:algorithm] == :mle
       end
 
+      # Returns the root-mean-square error (RMSE/RMSD). Useful for assessing model fit
+      # for prediction models. Return value is in the same units as the response
+      # variable. Lower is better.
+      #
+      # @return [Numeric] root-mean-square error
+      #
+      # @example
+      #   require 'statsample-glm'
+      #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
+      #   glm  = Statsample::GLM.compute data_set, "y", :logistic, constant: 1
+      #   glm.rmse
+      #     # => 0.37686741473497765
+      #
+      def rmse
+        @regression.residuals.standard_deviation_population
+      end
+
       # Use the fitted GLM to obtain predictions on new data.
       #
       # == Arguments 

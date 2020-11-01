@@ -12,33 +12,25 @@ module Statsample
           "Statsample::GLM::Logistic"
         end
 
-       protected
-
+      protected
         def measurement x, b
-          (x * b).map { |y| 1/(1 + Math.exp(-y)) }
+          (x * b).map{ |y| 1.fdiv(1 + Math.exp(-y)) }
         end
 
-        def weight x, b
-          mus = measurement(x,b).column_vectors.map(&:to_a).flatten
-          mus_intermediate = mus.map { |p| 1 - p }
-          weights = mus.zip(mus_intermediate).collect { |x| x.inject(:*) }
+        def weight x, b, mus
+          weights = mus.map{ |p| p * (1 - p) }
 
-          w_mat = Matrix.I(weights.size)
-          w_enum = weights.to_enum
-          return w_mat.map do |x|
-            x.eql?(1) ? w_enum.next : x # diagonal consists of first derivatives of logit
-          end
+          Matrix.diagonal(*weights)
         end
 
-        def jacobian x, b, y
-          mu_flat     = measurement(x,b).column_vectors.map(&:to_a).flatten
-          column_data = y.zip(mu_flat).map { |x| x.inject(:-) }
+        def jacobian x, b, y, mus
+          column_data = y.map.with_index{ |y, i| y - mus[i] }
 
           x.transpose * Matrix.column_vector(column_data)
         end
 
-        def hessian x, b
-          (x.transpose * weight(x, b) * x).map { |x| -x }
+        def hessian x, b, mus
+          (x.transpose * weight(x, b, mus) * x) * -1
         end
       end
     end
