@@ -17,20 +17,20 @@ module Statsample
           (x * b).map{ |y| 1.fdiv(1 + Math.exp(-y)) }
         end
 
-        def weight x, b, mus
+        def weight mus
           weights = mus.map{ |p| p * (1 - p) }
 
           Matrix.diagonal(*weights)
         end
 
-        def jacobian x, b, y, mus
+        def jacobian x, y, mus
           column_data = y.map.with_index{ |y, i| y - mus[i] }
 
           x.transpose * Matrix.column_vector(column_data)
         end
 
-        def hessian x, b, mus
-          (x.transpose * weight(x, b, mus) * x) * -1
+        def hessian x, mus
+          (x.transpose * weight(mus) * x) * -1
         end
       end
     end

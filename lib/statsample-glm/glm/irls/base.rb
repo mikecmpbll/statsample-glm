@@ -46,9 +46,9 @@ module Statsample
           b = Matrix.column_vector Array.new(@data_set.column_size, 0.0)
 
           1.upto(@opts[:iterations]) do
-            mus = measurement(x, b).column_vectors.reduce([]){ |a, v| a.concat v.to_a }
-            intermediate = (hessian(@data_set, b, mus).inverse *
-                            jacobian(@data_set, b, @dependent, mus))
+            mus = measurement(@data_set, b).column_vectors.reduce([]){ |a, v| a.concat v.to_a }
+            intermediate = (hessian(@data_set, mus).inverse *
+                            jacobian(@data_set, @dependent, mus))
             b_new = b - intermediate
 
             complete = (b_new - b).map(&:abs).entries.sum < @opts[:epsilon]
