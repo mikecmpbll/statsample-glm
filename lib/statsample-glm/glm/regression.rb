@@ -105,8 +105,10 @@ module Statsample
       def canonicalize_df(orig_df)
         tokens = @formula.canonical_tokens
         tokens.shift if tokens.first.value == '1'
-        df = tokens.map { |t| t.to_df orig_df }.reduce(&:merge)
-        df
+        tokens.map{ |t| t.to_df orig_df }.reduce do |dfbase, df|
+          df.vectors.each{ |c| dfbase[c] = df[c] }
+          dfbase
+        end
       end
 
       def fit_model
