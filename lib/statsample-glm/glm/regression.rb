@@ -11,11 +11,12 @@ module Statsample
       #   df = Daru::DataFrame.from_csv 'spec/data/df.csv'
       #   df.to_category 'c', 'd', 'e'
       #   reg = Statsample::GLM::Regression.new 'y~a+b:c', df, :logistic
-      def initialize(formula, df, method, opts = {})
+      def initialize(formula, df, method, opts = {}, load_data = nil)
         @formula = FormulaWrapper.new formula, df
         @df = df
         @method = method
         @opts = opts
+        fit_model(load_data) if load_data
       end
 
       # Returns the fitted model
@@ -111,14 +112,15 @@ module Statsample
         end
       end
 
-      def fit_model
+      def fit_model(load_data = nil)
         @opts[:constant] = 1 if
           @formula.canonical_tokens.include? Token.new('1')
         @model = Statsample::GLM.compute(
           df_for_regression,
           @formula.y.value,
           @method,
-          @opts
+          @opts,
+          load_data
         )
       end
     end

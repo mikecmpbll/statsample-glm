@@ -8,10 +8,11 @@ module Statsample
   module GLM
     class Base
       extend Gem::Deprecate
+      attr_reader :regression
 
-      def initialize ds, y, opts={}
-        @opts   = opts
-          
+      def initialize ds, y, opts = {}, load_data = nil
+        @opts = opts
+
         set_default_opts_if_any
 
         @dependent = ds[y]
@@ -24,13 +25,12 @@ module Statsample
         end
 
         algorithm = @opts[:algorithm].upcase
-        method    = @opts[:method].capitalize
+        method = @opts[:method].capitalize
 
         @regression = Object.const_get(
-                      "Statsample::GLM::#{algorithm}::#{method}"
-                      ).new @data_set, @dependent, @opts
+          "Statsample::GLM::#{algorithm}::#{method}"
+        ).new @data_set, @dependent, @opts, load_data
       end
-
 
       # Returns the coefficients of trained model
       #
@@ -80,7 +80,7 @@ module Statsample
       #     #                   1  0.7194644911927432
       #     #                   2 0.40380565497038895
       #
-      def standard_errors as_a=:vector  
+      def standard_errors as_a=:vector
         case as_a
         when :hash
           se = {}
@@ -96,7 +96,7 @@ module Statsample
           raise ArgumentError, "as_a has to be one of :array, :hash, or :vector"
         end
       end
-      
+
       # standard_error will be removed soon
       alias :standard_error :standard_errors
       deprecate :standard_error, :standard_errors, 2017, 1
@@ -114,7 +114,7 @@ module Statsample
       #   data_set = Daru::DataFrame.from_csv "spec/data/logistic.csv"
       #   glm  = Statsample::GLM.compute data_set, "y", :logistic, constant: 1
       #   glm.fitted_mean_values
-      #     # => 
+      #     # =>
       #     # #<Daru::Vector:27008600 @name = nil @metadata = {} @size = 50 >
       #     #                                       nil
       #     #                   0  0.18632025624516532
@@ -204,7 +204,7 @@ module Statsample
 
       # Use the fitted GLM to obtain predictions on new data.
       #
-      # == Arguments 
+      # == Arguments
       #
       # * new_data - a `Daru::DataFrame` containing new observations for the same
       #   variables that were used to fit the model. The vectors must be given
@@ -235,11 +235,11 @@ module Statsample
       #     #                  2 0.6922216620285223
       #
       def predict new_data=nil
-        if @opts[:constant] then
+        if @opts[:constant]
           new_data.add_vector :constant, [@opts[:constant]]*new_data.nrows
         end
         # Statsample::GLM::Normal model always has an intercept term, see #initialize
-        if self.is_a? Statsample::GLM::Normal then
+        if self.is_a? Statsample::GLM::Normal
           new_data.add_vector :constant, [1.0]*new_data.nrows
         end
 
@@ -249,14 +249,10 @@ module Statsample
      private
 
       def set_default_opts_if_any
-        @opts[:algorithm]  ||= :irls 
-        @opts[:iterations] ||= 100   
-        @opts[:epsilon]    ||= 1e-7  
-        @opts[:link]       ||= :log  
-      end
-
-      def create_vector arr
-        Daru::Vector.new(arr)
+        @opts[:algorithm] ||= :irls
+        @opts[:iterations] ||= 100
+        @opts[:epsilon] ||= 1e-7
+        @opts[:link] ||= :log
       end
 
       def add_constant_vector x=1

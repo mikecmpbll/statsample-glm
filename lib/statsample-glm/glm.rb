@@ -6,6 +6,7 @@ require 'statsample-glm/glm/formula/formula.rb'
 require 'statsample-glm/glm/formula/wrapper.rb'
 require 'statsample-glm/glm/formula/token.rb'
 require 'statsample-glm/glm/regression'
+require 'statsample-glm/glm/daru_monkey'
 
 module Statsample
   module GLM
@@ -28,12 +29,12 @@ module Statsample
     #
     # == Returns
     #    GLM object for given method.
-    def self.compute(data_set, dependent_column, method, opts={})
+    def self.compute(data_set, dependent_column, method, opts = {}, load_data = nil)
       opts[:method] = method
 
       Kernel.const_get(
         "Statsample::GLM::#{method.capitalize}"
-      ).new data_set, dependent_column, opts
+      ).new data_set, dependent_column, opts, load_data
     end
 
     # TODO: Decide whether to remove this or not.

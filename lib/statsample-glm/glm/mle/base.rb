@@ -3,10 +3,10 @@ module Statsample
   module GLM
     module MLE
       class Base
-          attr_reader :coefficients, :iterations, 
+          attr_reader :coefficients, :iterations,
             :fitted_mean_values, :residuals, :degrees_of_freedom,
             :log_likelihood
-  
+
         MIN_DIFF_PARAMETERS=1e-2
 
         def initialize data_set, dependent, opts
